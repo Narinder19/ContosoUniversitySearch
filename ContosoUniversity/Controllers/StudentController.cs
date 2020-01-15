@@ -17,42 +17,50 @@ namespace ContosoUniversity.Controllers
         private SchoolContext db = new SchoolContext();
 
         // GET: Student
-        public ViewResult Index(string sortOrder,string currentFilter, string searchString, int? page)
+        public ViewResult Index()
         {
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             var student = from s in db.Students
                           select s;
-            if(searchString != null)
-            { page = 1; }
-            else { searchString = currentFilter; }
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentSort = sortOrder;
-            if(!String.IsNullOrEmpty(searchString))
-            {
-                student = student.Where(s => s.LastName.Contains(searchString)
-                || s.FirstMidName.Contains(searchString));
-            }
-            switch(sortOrder)
-            {
-                case "name_desc":
-                    student = student.OrderByDescending(s => s.LastName);
-                    break;
-                case "Date":
-                    student = student.OrderByDescending(s => s.EnrollmentDate);
-                    break;
-                case "date_desc":
-                    student = student.OrderByDescending(s => s.EnrollmentDate);
-                    break;
-                default:
-                    student = student.OrderBy(s => s.LastName);
-                    break;
-            }
-
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(student.ToPagedList(pageNumber,pageSize));
+            
+            
+            return View(student);
         }
+        //public ViewResult Index(string sortOrder,string currentFilter, string searchString, int? page)
+        //{
+        //    ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        //    ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+        //    var student = from s in db.Students
+        //                  select s;
+        //    if(searchString != null)
+        //    { page = 1; }
+        //    else { searchString = currentFilter; }
+        //    ViewBag.CurrentFilter = searchString;
+        //    ViewBag.CurrentSort = sortOrder;
+        //    if(!String.IsNullOrEmpty(searchString))
+        //    {
+        //        student = student.Where(s => s.LastName.Contains(searchString)
+        //        || s.FirstMidName.Contains(searchString));
+        //    }
+        //    switch(sortOrder)
+        //    {
+        //        case "name_desc":
+        //            student = student.OrderByDescending(s => s.LastName);
+        //            break;
+        //        case "Date":
+        //            student = student.OrderByDescending(s => s.EnrollmentDate);
+        //            break;
+        //        case "date_desc":
+        //            student = student.OrderByDescending(s => s.EnrollmentDate);
+        //            break;
+        //        default:
+        //            student = student.OrderBy(s => s.LastName);
+        //            break;
+        //    }
+
+        //    int pageSize = 3;
+        //    int pageNumber = (page ?? 1);
+        //    return View(student.ToPagedList(pageNumber,pageSize));
+        //}
 
         // GET: Student/Details/5
         public ActionResult Details(int? id)
